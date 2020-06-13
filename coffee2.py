@@ -1,15 +1,20 @@
+# Asks for quantities of water, milk and coffee beans 
+# in coffee machine, then says how 
+# many cups of coffee you can make
+
 water = int(input("Write how many ml of water the coffee machine has: "))
 milk = int(input("Write how many ml of milk the coffee machine has: "))
 coffee_beans = int(input("Write how many grams of coffee beans the coffee machine has: "))
 cups_coffee = int(input("Write how many cups of coffee you will need: "))
 
+sufficient_water = water >= (cups_coffee * 200) # one cup coffee needs 200ml water
+sufficient_milk = milk >= (cups_coffee * 50) # needs 50ml milk
+sufficient_coffee = coffee_beans >= (cups_coffee * 15) # needs 15g coffee beans
+
+# cup_quantifier tells how many cups you can make with ingredients available
 def cup_quantifier(ingredient, divider):
     number_of_cups = ingredient / divider
     return int(number_of_cups)
-
-sufficient_water = water >= (cups_coffee * 200)
-sufficient_milk = milk >= (cups_coffee * 50)
-sufficient_coffee = coffee_beans >= (cups_coffee * 15) 
 
 available_water = cup_quantifier(water, 200)
 available_milk = cup_quantifier(milk, 50)
