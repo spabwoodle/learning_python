@@ -14,7 +14,7 @@ latte = [7, 350, 75, 20]
 cappuccino = [6, 200, 100, 12]
 hot_drink = []
 
-def coffee_machine_buy(request):
+def coffee_machine_buy():
     buy_request = int(input("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino: "))
     if buy_request == 1:
         hot_drink = espresso
@@ -35,7 +35,7 @@ def coffee_machine_buy(request):
     disposable_cups - 1, 
     cash_float + hot_drink[0]))
 
-def coffee_machine_fill(request):
+def coffee_machine_fill():
     water_request = int(input("Write how many ml of water do you want to add:"))
     milk_request = int(input("Write how many ml of milk do you want to add:"))
     coffee_request = int(input("Write how many grams of coffee beans do you want to add:"))
@@ -53,9 +53,9 @@ def coffee_machine_fill(request):
     disposable_cups + cup_request,
     cash_float))
 
-def coffee_machine_take(request):
-    print("""I gave you $%d" % (cash_float))
-    \nThe coffee machine has:
+def coffee_machine_take():
+    print("I gave you $%d" % (cash_float))
+    print("""\nThe coffee machine has:
     %d of water
     %d of milk
     %d of coffee beans
@@ -65,17 +65,18 @@ def coffee_machine_take(request):
 
 #start of program:
 
-print("The coffee machine has:")
-print(str(water) + " of water")
-print(str(milk) + " of milk")
-print(str(coffee_beans) + " of coffee beans")
-print(str(disposable_cups) + " of disposable cups")
-print(str(cash_float) + " of money\n")
+print("""The coffee machine has:
+    %d of water
+    %d of milk
+    %d of coffee beans
+    %d of disposable cups
+    %d of money""" % (water, milk, coffee_beans, disposable_cups, cash_float))
+
 request = input("Write action (buy, fill, take): ")
 
 if request == "buy":
-    coffee_machine_buy(request)
+    coffee_machine_buy()
 elif request == "fill":
-    coffee_machine_fill(request)
+    coffee_machine_fill()
 elif request == "take":
-    coffee_machine_take(request)
+    coffee_machine_take()
