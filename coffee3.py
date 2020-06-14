@@ -54,14 +54,14 @@ def coffee_machine_fill(request):
     cash_float))
 
 def coffee_machine_take(request):
-    print("I gave you $0")
-    print("""\nThe coffee machine has:
+    print("""I gave you $%d" % (cash_float))
+    \nThe coffee machine has:
     %d of water
     %d of milk
     %d of coffee beans
     %d of disposable cups
     %d of money""" % 
-    (water, milk, coffee_beans, disposable_cups, cash_float))
+    (water, milk, coffee_beans, disposable_cups, int(cash_float - cash_float)))
 
 #start of program:
 
