@@ -31,7 +31,7 @@ def lowest_number(a, b, c):
 number_of_cups = lowest_number(available_water, available_milk, available_beans)
 
 def coffee_machine(water, milk, coffee_beans, cups_coffee):
-    if sufficient_water is False or sufficient_milk is False or sufficient_coffee is False:
+    if not sufficient_water or not sufficient_milk or not sufficient_coffee:
         return("No, I can make only " + str(number_of_cups) + " cups of coffee")      
     elif available_water >= 2 and available_milk >= 2 and available_beans >= 2:        
         return("Yes, I can make that amount of coffee (and even " + str(number_of_cups - cups_coffee) + " more than that)")
