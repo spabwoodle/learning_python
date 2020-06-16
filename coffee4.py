@@ -24,26 +24,26 @@ def coffee_machine_status(water, milk, coffee_beans, disposable_cups, cash):
 $%d of money""" % 
     (water, milk, coffee_beans, disposable_cups, cash))
     
-def update_stock(water_change, milk_change, coffee_change, cash_change):
+def update_stock(water_needed, milk_needed, coffee_needed, cash_needed):
     global water
     global milk
     global coffee_beans 
     global disposable_cups
     global cash_float
-    if (water < water_change):
+    if (water < water_needed):
         print("Sorry, not enough water!")
     else:
-        if milk < milk_change:
+        if milk < milk_needed:
             print("Sorry, not enough milk!\n")
         else:
-            if coffee_beans < coffee_change:
+            if coffee_beans < coffee_needed:
                 print("Sorry, not enough coffee!\n")
             else:
-                water = water - water_change
-                milk = milk - milk_change
-                coffee_beans = coffee_beans - coffee_change
+                water = water - water_needed
+                milk = milk - milk_needed
+                coffee_beans = coffee_beans - coffee_needed
                 disposable_cups = disposable_cups - 1
-                cash_float = cash_float + cash_change
+                cash_float = cash_float + cash_needed
                 print("I have enough resources, making you a coffee!")
 
 
