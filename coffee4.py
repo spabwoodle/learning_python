@@ -9,7 +9,6 @@ contents = [550, 400, 540, 120, 9]
 espresso = [4, 250, 0, 16]
 latte = [7, 350, 75, 20]
 cappuccino = [6, 200, 100, 12]
-hot_drink = []
 
 
 def coffee_machine_status(water, milk, coffee_beans, disposable_cups, cash):    
