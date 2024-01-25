@@ -1,0 +1,67 @@
+# Calls a government API with live data on bus locations
+# Returns an alert when my wife's bus passes KFC, 10 mins before our bus stop. 
+
+from lxml import etree
+import requests
+import time
+from datetime import datetime
+
+# Import API data
+url = 'https://data.bus-data.dft.gov.uk/api/v1/datafeed/12521/?api_key=9920c78a099f3485eb4950848f42f8837781f462'
+response = requests.get(url)
+
+# Define the language used in the XML doc
+xml_language = {'d3': 'http://www.siri.org.uk/siri'}
+
+while True:
+
+    # Parse the XML content returned from API
+    root = etree.fromstring(response.content)
+
+    # Create boundingBox (an area of the map that I want to monitor the bus going through)
+    bounding_box = {
+    "min_latitude": 53.43937916393929,
+    "max_latitude": 53.44305744193696,
+    "min_longitude": -2.2850469185595346,
+    "max_longitude": -2.2791778669555325
+    }
+
+    # XPath to search for buses with PublishedLineName=87 inside the bounding box
+    xpath = f".//d3:VehicleActivity[d3:MonitoredVehicleJourney/d3:PublishedLineName='87' and " \
+          f"number(.//d3:VehicleLocation/d3:Latitude) > {bounding_box['min_latitude']} and " \
+          f"number(.//d3:VehicleLocation/d3:Latitude) < {bounding_box['max_latitude']} and " \
+          f"number(.//d3:VehicleLocation/d3:Longitude) > {bounding_box['min_longitude']} and " \
+          f"number(.//d3:VehicleLocation/d3:Longitude) < {bounding_box['max_longitude']}]"
+
+    # Turn the bus info into an array
+    matching_buses = root.xpath(xpath, namespaces=xml_language)
+    
+    # Wait for a bus
+    if matching_buses:
+        # Turn array into string
+        bus = matching_buses[0]        
+        # Get the current time
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+       # Prepare the message to be sent via Pushover
+        line_name = bus.find(".//d3:PublishedLineName", namespaces={"d3": "http://www.siri.org.uk/siri"}).text
+        destination_name = bus.find(".//d3:DestinationName", namespaces={"d3": "http://www.siri.org.uk/siri"}).text
+        message = f"PublishedLineName: {line_name}, DestinationName: {destination_name}, Time: {current_time}"
+
+        # Pushover API endpoint
+        pushover_url = "https://api.pushover.net/1/messages.json"
+
+        # Prepare Pushover API POST request
+        data = {
+            "token": "a9v2ek342dei2j1ip9t4m8jrn1id4t",
+            "user": "uazrcfiooofb88r8ceb979zu5mkwek",
+            "message": (f"Bus 87 left the bus station at: {current_time}")
+        }
+
+        # Make the POST request to Pushover API
+        response_pushover = requests.post(pushover_url, data=data)
+
+        break
+
+    # If no matching bus is found, check every 10 seconds
+    time.sleep(10)
